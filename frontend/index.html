@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kithora — live Khmer–English captions</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Khmer:wght@400;600&display=swap"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <h1>Kithora</h1>
+        <p class="tagline">Real-time Khmer–English captions</p>
+      </div>
+      <div id="status" class="status" data-state="idle" role="status" aria-live="polite">
+        <span class="status__dot" aria-hidden="true"></span>
+        <span class="status__text">Idle</span>
+      </div>
+    </header>
+
+    <main class="layout">
+      <div class="controls">
+        <button id="toggle" class="btn" type="button">Start</button>
+        <p class="hint">Allow microphone access when asked. Captions appear below as you speak.</p>
+      </div>
+
+      <p id="error" class="error" role="alert" hidden></p>
+
+      <section
+        id="captions"
+        class="captions"
+        aria-live="polite"
+        aria-label="Live captions"
+        data-empty-text="Press Start and speak — captions will appear here."
+      ></section>
+    </main>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
