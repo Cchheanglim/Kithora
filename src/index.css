@@ -1,0 +1,163 @@
+@import "tailwindcss";
+@import "@fontsource-variable/saira/standard.css";
+@import "@fontsource-variable/saira/standard-italic.css";
+@import "@fontsource-variable/kantumruy-pro/wght.css";
+@import "@fontsource-variable/kantumruy-pro/wght-italic.css";
+@import "@fontsource/koulen/index.css";
+
+/* Kethra racing-league world. Graphite ground, acid livery for the one action, orange only for live + switch markers. */
+@theme {
+  --color-graphite: #0e1114;
+  --color-pit: #15191e;
+  --color-track: #1c2127;
+  --color-track-2: #2a2f36;
+  --color-tarmac: #7d848d;
+  --color-silver: #b6bcc4;
+  --color-decal: #f4f6f8;
+  --color-acid: #dfff00;
+  --color-orange: #ff5a00;
+  --color-alert: #ff5c7a;
+  --color-go: #6cf0a0;
+
+  --font-sans: 'Saira Variable', 'Kantumruy Pro Variable', system-ui, sans-serif;
+  --font-display: 'Saira Variable', 'Koulen', sans-serif;
+  --font-khmer: 'Koulen', 'Kantumruy Pro Variable', sans-serif;
+  --font-mono: ui-monospace, 'Cascadia Code', Consolas, 'Kantumruy Pro Variable', monospace;
+}
+
+@layer base {
+  html {
+    background: var(--color-graphite);
+    color-scheme: dark;
+    scrollbar-color: var(--color-track-2) var(--color-graphite);
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-decal);
+    line-height: 1.6;
+    caret-color: var(--color-acid);
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Khmer stacks vowels above and subscripts below: give it room everywhere it is the page language. */
+  html[lang='km'] body { line-height: 1.85; }
+  ::selection { background: var(--color-acid); color: var(--color-graphite); }
+  :focus-visible { outline: 2px solid var(--color-acid); outline-offset: 3px; }
+  a { text-underline-offset: 0.25em; }
+  table { font-variant-numeric: tabular-nums; }
+  input[type='checkbox'] { accent-color: var(--color-acid); }
+  code, pre, kbd { font-family: var(--font-mono); }
+}
+
+@layer components {
+  /* Leaning italic display voice. Khmer glyphs fall through to Koulen and stay upright. */
+  .k-display {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 800;
+    font-stretch: 112%;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    font-synthesis: none;
+    text-transform: uppercase;
+  }
+  .k-display-max { font-weight: 900; font-stretch: 125%; }
+  html[lang='km'] .k-display:not([lang='en']) { line-height: 1.3; letter-spacing: 0; }
+  .k-khmer-display { font-family: var(--font-khmer); line-height: 1.35; font-synthesis: none; }
+  .k-label {
+    font-style: italic;
+    font-weight: 650;
+    font-stretch: 100%;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-silver);
+    font-synthesis: none;
+  }
+  html[lang='km'] .k-label { letter-spacing: 0; text-transform: none; font-size: 0.8125rem; }
+
+  /* Chamfered shapes: the clip lives on a pseudo-element so focus outlines are never clipped. */
+  .k-chamfer { position: relative; isolation: isolate; }
+  .k-chamfer::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--k-fill, var(--color-track));
+    clip-path: polygon(0 0, calc(100% - var(--k-cut, 14px)) 0, 100% var(--k-cut, 14px), 100% 100%, var(--k-cut, 14px) 100%, 0 calc(100% - var(--k-cut, 14px)));
+    transition: background-color 160ms ease-out, filter 160ms ease-out;
+  }
+
+  .k-panel { --k-fill: var(--color-pit); --k-cut: 18px; padding: 1.5rem; }
+  .k-panel-raised { --k-fill: var(--color-track); }
+
+  .k-btn {
+    --k-cut: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.4rem;
+    font-style: italic;
+    font-weight: 750;
+    font-stretch: 108%;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.9375rem;
+    cursor: pointer;
+    font-synthesis: none;
+    white-space: nowrap;
+  }
+  html[lang='km'] .k-btn { text-transform: none; letter-spacing: 0; font-style: normal; }
+  .k-btn:disabled { cursor: not-allowed; --k-fill: var(--color-track-2); color: var(--color-tarmac); }
+  .k-btn-primary { --k-fill: var(--color-acid); color: var(--color-graphite); padding-right: 1.9rem; }
+  /* Primary actions end in the livery chevron. */
+  .k-btn-primary::before { clip-path: polygon(0 0, calc(100% - 0.85rem) 0, 100% 50%, calc(100% - 0.85rem) 100%, 0 100%); }
+  .k-btn-primary:not(:disabled):hover::before { filter: brightness(1.12); }
+  .k-btn-ghost { --k-fill: var(--color-track-2); color: var(--color-decal); }
+  .k-btn-ghost:not(:disabled):hover { --k-fill: #353b44; }
+  .k-btn-danger { --k-fill: var(--color-alert); color: var(--color-graphite); }
+
+  .k-input {
+    width: 100%;
+    min-height: 2.75rem;
+    background: var(--color-graphite);
+    border: 1px solid var(--color-track-2);
+    padding: 0.5rem 0.85rem;
+    color: var(--color-decal);
+    font-size: 0.9375rem;
+    transition: border-color 140ms ease-out;
+  }
+  .k-input::placeholder { color: var(--color-tarmac); }
+  .k-input:hover { border-color: #3a414b; }
+  .k-input:focus { outline: none; border-color: var(--color-acid); }
+  .k-input:focus-visible { outline: none; box-shadow: 0 0 0 1px var(--color-acid); }
+
+  /* Track lines behind live captions: faint horizontal lanes. */
+  .k-track {
+    background-image: repeating-linear-gradient(180deg, transparent 0 27px, rgba(182, 188, 196, 0.07) 27px 28px);
+  }
+}
+
+/* The caption lap: each word streaks in along the track and settles sharp. */
+@keyframes k-word-in {
+  from { opacity: 0; transform: translateX(2.5rem); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes k-marker-in {
+  from { opacity: 0; transform: translateY(-0.6rem) scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes k-streak {
+  from { transform: translateX(110%); }
+  to { transform: translateX(-110%); }
+}
+.k-word { display: inline-block; animation: k-word-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.k-marker { display: inline-block; animation: k-marker-in 380ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+.k-streak { animation: k-streak 1.6s cubic-bezier(0.45, 0, 0.2, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .k-word, .k-marker { animation: none; }
+  .k-streak { display: none; }
+  .k-chamfer::before { transition: none; }
+}

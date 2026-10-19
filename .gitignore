@@ -1,0 +1,10 @@
+.agy/
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+.env
+dist/
+*.db
+.pytest_cache/
+.impeccable/
