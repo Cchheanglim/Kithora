@@ -94,6 +94,7 @@ class GeminiTranscribeSpeechAdapter(SpeechEngineAdapter):
 
     def _transcribe_sync(self, payload: AudioInputPayload) -> str:
         from google import genai
+        from google.genai import types
 
         transcription_config: dict = {"mode": "verbatim"}
         codes = [c.strip() for c in settings.gemini_language_codes.split(",") if c.strip()]
@@ -102,7 +103,12 @@ class GeminiTranscribeSpeechAdapter(SpeechEngineAdapter):
         if payload.vocabulary:
             transcription_config["custom_vocabulary"] = payload.vocabulary
 
-        client = genai.Client(api_key=settings.gemini_api_key)
+        # The HTTP timeout matters: the route's asyncio timeout stops waiting, but cannot stop this
+        # thread. Without a timeout here, a hung request would hold a worker thread forever.
+        client = genai.Client(
+            api_key=settings.gemini_api_key,
+            http_options=types.HttpOptions(timeout=int(settings.kethra_engine_timeout_seconds * 1000)),
+        )
         interaction = client.interactions.create(
             model=self.engine_id,
             input=[{

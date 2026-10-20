@@ -30,7 +30,8 @@ General speech tools pick one language and translate or garble the rest. Kethra 
 ## Capabilities and Constraints
 
 - Built: FastAPI backend (SQLite by default) and a React + Vite + Tailwind site, with email/password accounts, hashed API keys with permissions, rate limits, and usage records that store metadata only, never audio or transcripts.
-- Required, not built yet: the whole website must switch between English and Khmer.
+- Built: the whole website switches between English and Khmer (`src/i18n.tsx`; choice saved in the browser).
+- Built: an accuracy evaluation tool (`python_backend/evaluation/`) that scores an engine against human reference transcripts. It has not been run on real clips yet.
 - Live captions arrive as 4-second clips with about 5 seconds of delay. There are no word-by-word partial results, and words can be cut at clip edges.
 - Not built: email verification, password reset, projects, SDKs, an admin view.
 - No pricing or plans. Do not show pricing.
@@ -58,4 +59,4 @@ General speech tools pick one language and translate or garble the rest. Kethra 
 ## Accessibility & Inclusion
 
 - Khmer script and English must both be fully legible wherever they appear, including mixed in one line.
-- The site must work fully in either English or Khmer once the language switch exists.
+- The site must work fully in either English or Khmer.

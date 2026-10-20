@@ -15,6 +15,8 @@ Users sign up on the website, create API keys, and call the speech API from thei
 | `python_backend/app/security.py` | Password hashing (scrypt), login sessions, key hashing, stream tokens, rate limits |
 | `python_backend/app/adapters/base.py` | Speech engines: Gemini 3.5 Transcribe and a labelled mock. Add new engines here |
 | `python_backend/app/services/normalizer.py` | Fixes Unicode/spacing between Khmer and English. Never changes words |
+| `python_backend/app/services/scoring.py` | Accuracy metrics: mixed error rate (Khmer clusters + English words), WER, CER |
+| `python_backend/evaluation/` | Accuracy evaluation CLI: runs an engine over recorded clips and scores it ([guide](python_backend/evaluation/README.md)) |
 | `python_backend/app/db.py` | SQLAlchemy models: users, login sessions, API keys, usage records |
 | `src/` | React website: landing, login/register, dashboard, keys, playground, docs, settings |
 
@@ -53,7 +55,7 @@ cd .. && npm run lint                # frontend type check
 
 ## Status and known limits
 
-- **Accuracy is not measured yet.** Google lists Khmer (`km-KH`) for Gemini 3.5 Transcribe, but nobody has tested Khmer-English code-switching on it here. Next step: record ~20 consented mixed-language clips and score them.
+- **Accuracy is not measured yet.** Google lists Khmer (`km-KH`) for Gemini 3.5 Transcribe, but nobody has tested Khmer-English code-switching on it here. The scoring tool is ready ([evaluation/README.md](python_backend/evaluation/README.md)); next step: record ~20 consented mixed-language clips and run it.
 - Live captions send a complete 4-second clip at a time, so there are no word-by-word partial results and words can be split at clip boundaries. Gemini's real streaming model (`gemini-3.5-transcribe-live`) is the upgrade path.
 - Rate limits, live-session tokens and stream counts live in server memory: fine for one server process, needs Redis for more.
 - Database tables are created automatically; there are no Alembic migrations yet. Add them before changing tables that hold real data.

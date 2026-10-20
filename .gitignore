@@ -8,3 +8,6 @@ dist/
 *.db
 .pytest_cache/
 .impeccable/
+# Voice recordings and their transcripts: personal data, never committed.
+python_backend/evaluation/clips/
+python_backend/evaluation/results/
